@@ -22,9 +22,17 @@ func main() {
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/ascii-art", asciiHandler)
 
-	fmt.Println("Server running on http://localhost:8080")
+	// Render provides the listening port through the PORT environment variable.
+	// Use 8080 when running locally.
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	addr := ":" + port
+	fmt.Printf("Server listening on %s\\n", addr)
+
+	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatal(err)
 	}
 }
